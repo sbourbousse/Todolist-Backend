@@ -4,11 +4,15 @@ defmodule TodolistWeb.Router do
   pipeline :api do
     plug :accepts, ["json"]
   end
+  pipeline :auth do
+    plug TodolistWeb.Auth
+  end
 
   scope "/api", TodolistWeb do
     pipe_through :api
     post "/users/sign_in", UserController, :signin
     post "/users/sign_up", UserController, :create
+    pipe_through :auth
     get "/users/:id", UserController, :show
     # post "/users/sign_out", UserController, :signout
   end
